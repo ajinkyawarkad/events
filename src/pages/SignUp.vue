@@ -4,18 +4,27 @@
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h3>Sign In</h3>
-			
+				<h3>Sign Up</h3>
+				
 			</div>
 			<div class="card-body">
 				<form>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text"><i class="fas fa-user"></i></span>
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="name" v-model="name">
+						
+					</div>
+
+                    <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fa fa-at"></i></span>
 						</div>
 						<input type="text" class="form-control" placeholder="email" v-model="email">
 						
 					</div>
+                    
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -26,16 +35,13 @@
 						<input type="checkbox">Remember Me
 					</div>
 					<div class="form-group">
-						
+						<button class="btn btn-warning" @click.prevent="createUser()">Sign Up</button>
 					</div>
 				</form>
 			</div>
 			<div class="card-footer">
-			<router-link  class="btn btn-warning" @click.prevent="signIn()" to="./home">Sign In</router-link>
-        
-      
 				<div class="d-flex justify-content-center links">
-					Don't have an account?<a href="./signup">Sign Up</a>
+					Already have an account?<a href="./">Sign In</a>
 				</div>
 				<div class="d-flex justify-content-center">
 					<a href="#">Forgot your password?</a>
@@ -49,34 +55,24 @@
 <script>
 import firebase from "firebase";
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
-  data() {
-    return {
-      email:'',
-      password:'',
-      
+    data() {
+        return {
+            name:'',
+            email:'',
+            password:''
+        }
+    },
+    methods:{
+        createUser(){
+             console.log("ssssssds")
+            firebase.auth().createUserWithEmailAndPassword(this.email,this.password).then(res =>{
+              
+                console.log("ssss",res)
+            })
+        }
     }
-  },
-  methods:{
-    signIn(){
-      firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(res =>{
-         console.log("ssss",res)
-      })
-        let cu = firebase.auth().currentUser
-                cu.updateProfile({
-                   
-                    photoURL: "https://example.com/jane-q-user/profile.jpg"
-                })
-                firebase.firestore().collection("Users").doc(cu.uid).collection('details').doc(cu.uid).set({
-                    
-                    email:this.email
-                })
-                 console.log(cu.uid,cu.displayName)
-    }
-  }
+  
+
 }
 </script>
 
